@@ -29,7 +29,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/app
-            docker stop next-app || true
-            docker rm next-app || true
-            docker build -t next-app .
-            docker run -d -p 3000:3000 --name next-app next-app
+            sudo /usr/bin/docker stop next-app || true
+            sudo /usr/bin/docker rm next-app || true
+            sudo /usr/bin/docker build -t next-app .
+            sudo /usr/bin/docker run -d -p 3000:3000 --name next-app next-app
