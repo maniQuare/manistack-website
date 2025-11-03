@@ -1,7 +1,10 @@
 "use client "
+import ProductList from "@/components/ProductList"
 
 export default function Home(){
   return (
-    <div>Home</div>
+    <div>
+      <ProductList/>
+    </div>
   )
 }
