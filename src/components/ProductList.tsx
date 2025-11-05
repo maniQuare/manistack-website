@@ -11,7 +11,7 @@ interface Product {
 
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
-  console.log(products)
+ 
   
   
 
