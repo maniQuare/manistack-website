@@ -1,12 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
-const ProductSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
-  image: String,
-});
+const ProductSchema = new Schema(
+  {
+    title: String,
+    price: Number,
+    thumbnail: String,
+  },
+  { timestamps: true }
+);
 
-// ✅ Prevents OverwriteModelError
-const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
-
+const Product = models.Product || model("Product", ProductSchema);
 export default Product;
