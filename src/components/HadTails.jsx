@@ -83,16 +83,28 @@ export default function HeadTailGame() {
     }`;
   };
 
+
+
+  const [presetAmounts] = useState([10, 50, 100, 500, 1000]);
+const [selectedAmount, setSelectedAmount] = useState(null);
+const [balance, setBalance] = useState(1000); // starting balance
+
+const handlePlaceBet = () => {
+  if (!selectedAmount) return alert("Please select an amount!");
+  if (selectedAmount > balance) return alert("Insufficient balance!");
+  alert(`Bet of ₹${selectedAmount} placed!`);
+};
+
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl shadow-md p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-extrabold">
-            Head & Tail — Coin Flip (Next.js)
+            Head & Tails Coin
           </h2>
           <div className="text-sm text-gray-500">
-            Images: <span className="font-mono">/public/heads.png</span> &{" "}
-            <span className="font-mono">/public/tails.png</span>
+           
           </div>
         </div>
 
@@ -145,12 +157,7 @@ export default function HeadTailGame() {
                 </button>
               </div>
 
-              <div className="mt-3 text-xs text-gray-500">
-                Tip: Put your realistic coin images in{" "}
-                <span className="font-mono">/public</span> with the exact
-                filenames <span className="font-mono">heads.png</span> and{" "}
-                <span className="font-mono">tails.png</span>.
-              </div>
+       
             </div>
 
             <div className="rounded-xl p-4 bg-white border border-gray-100">
@@ -286,57 +293,87 @@ export default function HeadTailGame() {
           </div>
 
           {/* Right column */}
-          <div className="col-span-1 flex flex-col gap-4">
-            <div className="rounded-xl p-4 bg-white border border-gray-100">
-              <h3 className="font-semibold">Quick Actions</h3>
-              <div className="mt-3 flex gap-2">
-                <button
-                  onClick={() => handleChoice("HEADS")}
-                  disabled={isFlipping}
-                  className="flex-1 py-2 rounded-md bg-sky-600 text-white font-semibold"
-                >
-                  Flip HEADS
-                </button>
-                <button
-                  onClick={() => handleChoice("TAILS")}
-                  disabled={isFlipping}
-                  className="flex-1 py-2 rounded-md bg-amber-600 text-white font-semibold"
-                >
-                  Flip TAILS
-                </button>
-              </div>
+          {/* Right column */}
+<div className="col-span-1 flex flex-col gap-4">
+  {/* 💰 Bet Amount Selector */}
+  <div className="rounded-xl p-4 bg-white border border-gray-100">
+    <h3 className="font-semibold text-gray-800">💸 Choose Your Bet Amount</h3>
 
-              <div className="mt-4 text-sm text-gray-500">
-                You can replace the images with higher-resolution PNGs or
-                transparent backgrounds. Recommended size: 1024×1024 (they will
-                be scaled).
-              </div>
-            </div>
+    {/* Amount options */}
+    <div className="mt-3 grid grid-cols-3 gap-3">
+      {presetAmounts.map((amt) => (
+        <button
+          key={amt}
+          onClick={() => setSelectedAmount(amt)}
+          className={`py-2 rounded-lg border text-sm font-semibold transition
+            ${
+              selectedAmount === amt
+                ? "bg-sky-600 text-white border-sky-600 shadow-md scale-105"
+                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+            }`}
+        >
+          ₹{amt}
+        </button>
+      ))}
+    </div>
 
-            <div className="rounded-xl p-4 bg-white border border-gray-100">
-              <h3 className="font-semibold">Stats</h3>
-              <div className="mt-2 text-sm text-gray-600 space-y-2">
-                <div>
-                  Winning percentage:{" "}
-                  {(() => {
-                    const total = score.wins + score.losses;
-                    return total
-                      ? Math.round((score.wins / total) * 100) + "%"
-                      : "—";
-                  })()}
-                </div>
-                <div>Total flips: {score.wins + score.losses}</div>
-              </div>
-            </div>
+    {/* Place Bet button */}
+    <button
+      onClick={handlePlaceBet}
+      disabled={!selectedAmount || isFlipping}
+      className="w-full mt-4 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:opacity-50 transition"
+    >
+      Place Bet ₹{selectedAmount || 0}
+    </button>
 
-            <div className="rounded-xl p-4 bg-white border border-gray-100">
-              <h3 className="font-semibold">Customization</h3>
-              <p className="mt-2 text-sm text-gray-500">
-                Edit the coin size using Tailwind classes (w-56 h-56). Modify
-                animation duration in the &lt;style&gt; tag below.
-              </p>
-            </div>
-          </div>
+    {/* Current balance */}
+    <div className="mt-3 text-sm text-gray-600">
+      Balance: <span className="font-semibold text-gray-800">₹{balance}</span>
+    </div>
+  </div>
+
+  {/* 🎯 Quick Actions */}
+  <div className="rounded-xl p-4 bg-white border border-gray-100">
+    <h3 className="font-semibold text-gray-800">Quick Actions</h3>
+    <div className="mt-3 flex gap-2">
+      <button
+        onClick={() => handleChoice("HEADS")}
+        disabled={isFlipping || !selectedAmount}
+        className="flex-1 py-2 rounded-md bg-sky-600 text-white font-semibold hover:bg-sky-700 disabled:opacity-50 transition"
+      >
+        Flip HEADS
+      </button>
+      <button
+        onClick={() => handleChoice("TAILS")}
+        disabled={isFlipping || !selectedAmount}
+        className="flex-1 py-2 rounded-md bg-amber-600 text-white font-semibold hover:bg-amber-700 disabled:opacity-50 transition"
+      >
+        Flip TAILS
+      </button>
+    </div>
+  </div>
+
+  {/* 📊 Stats */}
+  <div className="rounded-xl p-4 bg-white border border-gray-100">
+    <h3 className="font-semibold text-gray-800">Stats</h3>
+    <div className="mt-2 text-sm text-gray-600 space-y-2">
+      <div>
+        Winning percentage:{" "}
+        {(() => {
+          const total = score.wins + score.losses;
+          return total
+            ? Math.round((score.wins / total) * 100) + "%"
+            : "—";
+        })()}
+      </div>
+      <div>Total flips: {score.wins + score.losses}</div>
+    </div>
+  </div>
+</div>
+
+          
+
+
         </div>
       </div>
 

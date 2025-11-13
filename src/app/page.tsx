@@ -8,8 +8,10 @@ import { AppDispatch, RootState } from "@/store";
 import { fetchProducts } from "@/store/productSlice";
 import { bagActions } from "@/store/bagSlice";
 import { Product } from "@/types/Product";
-import HadTails from "@/components/HadTails";
+import LotteryWheel from "@/components/LotteryWheel"
+
 import TeenPatti from "@/components/TeenPatti"
+import HeadTailGame from "@/components/HadTails";
 
 export default function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,7 +51,8 @@ export default function HomePage() {
   return (
     <div>
       
-      <TeenPatti/>
+     <LotteryWheel/>
+    
     </div>
   );
 }
